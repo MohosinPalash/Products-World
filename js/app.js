@@ -14,7 +14,7 @@ const showProducts = (products) => {
     div.classList.add("product");
     div.innerHTML = `<div class="single-product">
       <div>
-    <img class="product-image" src="${image}"></img>
+          <img class="product-image" src="${image}"></img>
       </div>
       <h3>${product.title}</h3>
       <p>Category: ${product.category}</p>
@@ -22,23 +22,28 @@ const showProducts = (products) => {
       <p>Average Rating: ${product.rating.rate}</p>
       <h2>Price: $ ${product.price}</h2>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger">Details</button></div>
+      <button id="details-btn" class="btn btn-danger">Details</button>
+      </div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
 };
+// No of products is counted here
 let count = 0;
 const addToCart = (id, price) => {
   count = count + 1;
   document.getElementById("total-Products").innerText = count;
   updatePrice("price", price);
   updateTaxAndCharge();
+  // Debug: updateTotal() is called here
   updateTotal();
 
 };
 
+//To get id and convert its value string to float
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
+  // Debug: parseInt is changed to parseFloat
   const converted = parseFloat(element);
   return converted;
 };
@@ -48,12 +53,14 @@ const updatePrice = (id, value) => {
   const convertedOldPrice = getInputValue(id);
   const convertPrice = parseFloat(value);
   const total = convertedOldPrice + convertPrice;
+  // Debug: Round value is removed and value is written upto 2 decimal float value
   document.getElementById(id).innerText = total.toFixed(2);
 };
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = Math.round(value);
+  // Debug: Round value is removed and value is written upto 2 decimal float value
+  document.getElementById(id).innerText = value.toFixed(2);
 };
 
 // update delivery charge and total Tax
@@ -79,6 +86,6 @@ const updateTotal = () => {
     getInputValue("price") + getInputValue("delivery-charge") +
     getInputValue("total-tax");
   console.log(grandTotal);
-  document.getElementById("total").innerText = grandTotal;
+  document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
 loadProducts();
